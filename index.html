@@ -4,7 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2030 AI Visual Triage Hub</title>
-  <script src="https://tailwindcss.com"></script>
+  <!-- Modern Font Pairing -->
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://jsdelivr.net"></script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
 </head>
 <body class="bg-[#0b0f19] text-slate-100 min-h-screen flex items-center justify-center p-4 antialiased selection:bg-cyan-500 selection:text-slate-900">
 
@@ -19,10 +28,10 @@
     <!-- Top Animated Tag -->
     <header class="text-center mb-8">
       <div class="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-full text-[11px] text-cyan-400 font-bold uppercase tracking-wider mb-4 animate-pulse">
-        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 inline-block animate-ping"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 inline-block"></span>
         2030 Vision AI System
       </div>
-      <h1 id="biz-title" class="text-2xl font-black tracking-tight bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
+      <h1 id="biz-title" class="text-2xl font-extrabold tracking-tight bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
         Boston Emergency Plumbers
       </h1>
       <p id="biz-sub" class="text-slate-400 text-xs mt-1.5 font-medium">Smart Dispatch Matrix • Boston, UK Region</p>
@@ -42,7 +51,7 @@
         <span class="block text-[10px] text-slate-500 mt-1">Requires wide perspective + core structural angles</span>
       </div>
 
-      <button onclick="triggerScan()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-xs uppercase tracking-wider py-4 px-4 rounded-xl shadow-lg shadow-cyan-500/10 active:scale-[0.99] transition-all">
+      <button onclick="triggerScan()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-extrabold text-xs uppercase tracking-wider py-4 px-4 rounded-xl shadow-lg shadow-cyan-500/10 active:scale-[0.99] transition-all cursor-pointer">
         Initiate Automated Appraisal
       </button>
     </div>
@@ -73,20 +82,27 @@
 
       <div class="space-y-3">
         <h4 class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Immediate Action Protocol:</h4>
-        <ul class="text-xs text-slate-300 space-y-2 pl-1">
-          <li class="flex items-start gap-2"><span class="text-cyan-400 font-bold">•</span> Shut down main fluid valve control gates immediately.</li>
-          <li class="flex items-start gap-2"><span class="text-cyan-400 font-bold">•</span> Isolate all active local electrical conduits in wet areas.</li>
+        <!-- Fixed unstyled list styles -->
+        <ul class="text-xs text-slate-300 space-y-2.5 pl-1">
+          <li class="flex items-start gap-2.5">
+            <span class="text-cyan-400 font-bold shrink-0">◆</span> 
+            <span>Shut down main fluid valve control gates immediately.</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-cyan-400 font-bold shrink-0">◆</span> 
+            <span>Isolate all active local electrical conduits in wet areas.</span>
+          </li>
         </ul>
       </div>
 
       <div class="p-3.5 bg-slate-950/60 rounded-xl border border-slate-800/80 text-center shadow-inner">
         <p class="text-[9px] text-slate-500 uppercase font-mono tracking-wider">Secure Operator Notification Pipeline</p>
         <p class="text-xs text-cyan-400 font-bold mt-1.5 flex items-center justify-center gap-1.5">
-          <span>⚡</span> Live alert pushed directly to Technician's terminal
+          <span>⚡</span> Live alert pushed directly to technician terminal
         </p>
       </div>
 
-      <button onclick="resetDemo()" class="w-full bg-slate-800/60 hover:bg-slate-800 text-slate-300 border border-slate-700/50 text-xs font-bold py-3 px-4 rounded-xl transition-all">
+      <button onclick="resetDemo()" class="w-full bg-slate-800/60 hover:bg-slate-800 text-slate-300 border border-slate-700/50 text-xs font-bold py-3 px-4 rounded-xl transition-all cursor-pointer">
         🔄 Simulate Alternate Scenario
       </button>
     </div>
