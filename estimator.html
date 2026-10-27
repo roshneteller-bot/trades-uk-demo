@@ -1,154 +1,156 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2030 Smart Quote Matrix</title>
-  <!-- Tailwind & Vue CDNs -->
   <script src="https://tailwindcss.com"></script>
-  <script src="https://unpkg.com"></script>
-  <!-- jsPDF Library CDN for generating PDFs instantly in browser -->
+  <!-- jsPDF dependency safely contained -->
   <script src="https://cloudflare.com"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 antialiased">
+<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex items-center justify-center p-4 antialiased selection:bg-emerald-500 selection:text-slate-900">
 
-  <div id="app" class="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl relative">
+  <!-- Background Decorative Glowing Nebulas -->
+  <div class="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
+    <div class="absolute -top-[20%] -right-[10%] w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[140px]"></div>
+    <div class="absolute -bottom-[20%] -left-[10%] w-[600px] h-[600px] bg-teal-600/10 rounded-full blur-[140px]"></div>
+  </div>
+
+  <div id="app" class="relative z-10 w-full max-w-md bg-slate-900/40 backdrop-blur-2xl border border-slate-800/80 rounded-3xl p-6 shadow-[0_0_50px_-12px_rgba(16,185,129,0.15)]">
     
-    <!-- Neon Design Accent -->
-    <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
     <header class="text-center mb-6">
-      <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-xs text-emerald-400 font-medium tracking-wide uppercase mb-3">
-        📊 Instant Fee Appraiser
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/30 rounded-full text-[11px] text-emerald-400 font-bold uppercase tracking-wider mb-4">
+        📊 Smart Fee Matrix
       </div>
-      <h1 class="text-2xl font-black bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-        {{ bizName }}
+      <h1 class="text-2xl font-black tracking-tight bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
+        Zanesville Corporate Law
       </h1>
-      <p class="text-slate-400 text-xs mt-1">Commercial Quote Matrix for {{ bizLocation }}</p>
+      <p class="text-slate-400 text-xs mt-1.5 font-medium">Instant Consultation Matrix • Zanesville, OH</p>
     </header>
 
-    <main class="space-y-6">
-      <!-- Step 1: Form Sliders & Interactive Elements -->
-      <div v-if="!formSubmitted" class="space-y-5">
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-            Project / Audit Scale: <span class="text-emerald-400 font-mono font-bold">{{ projectScale }} Hours</span>
-          </label>
-          <input type="range" min="5" max="50" step="5" v-model="projectScale" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+    <!-- Calculation Interface Panel -->
+    <div id="calc-panel" class="space-y-6">
+      <div>
+        <div class="flex justify-between items-center mb-2.5">
+          <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Project Scale Metrics</label>
+          <span class="text-xs font-mono font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md"><span id="hours-display">20</span> Hours</span>
         </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Service Complexity Tier</label>
-          <div class="grid grid-cols-2 gap-2">
-            <button @click="tierRate = 120" :class="tierRate === 120 ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400' : 'border-slate-800 bg-slate-950/40 text-slate-400'" class="border text-xs font-bold py-3 px-2 rounded-xl transition-all">
-              ⚖️ Standard Corporate
-            </button>
-            <button @click="tierRate = 220" :class="tierRate === 220 ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400' : 'border-slate-800 bg-slate-950/40 text-slate-400'" class="border text-xs font-bold py-3 px-2 rounded-xl transition-all">
-              🚨 Urgent Intervention
-            </button>
-          </div>
-        </div>
-
-        <!-- Real-time dynamic arithmetic projection -->
-        <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 flex justify-between items-center">
-          <span class="text-xs text-slate-400">Estimated Project Fee:</span>
-          <span class="text-xl font-mono font-black text-emerald-400">${{ projectScale * tierRate }}</span>
-        </div>
-
-        <!-- Lead Capture Shield -->
-        <div class="space-y-2 border-t border-slate-800/60 pt-4">
-          <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Secure Document Routing Details</label>
-          <input type="text" v-model="leadName" placeholder="Your Name or Company" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50">
-          <input type="email" v-model="leadEmail" placeholder="business@email.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50">
-        </div>
-
-        <button @click="submitQuote" :disabled="!leadName || !leadEmail" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 disabled:opacity-40 text-slate-950 font-bold text-sm py-3 px-4 rounded-xl shadow-lg shadow-emerald-500/10 active:scale-[0.98] transition-all">
-          Lock Estimate & Generate Audit PDF
-        </button>
+        <input type="range" id="scale-slider" min="5" max="50" step="5" value="20" oninput="updateCalculations()" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
       </div>
 
-      <!-- Step 2: Generation Screen -->
-      <div v-else class="text-center py-6 space-y-4">
-        <div class="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto text-xl border border-emerald-500/30">
-          ✓
+      <div>
+        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">Complexity Parameters</label>
+        <div class="grid grid-cols-2 gap-3">
+          <button id="btn-std" onclick="setTier(150, 'std')" class="border border-emerald-500 bg-emerald-500/10 text-emerald-400 text-xs font-black uppercase tracking-wider py-3.5 px-2 rounded-xl transition-all">
+            ⚖️ Standard Audit
+          </button>
+          <button id="btn-urg" onclick="setTier(300, 'urg')" class="border border-slate-800 bg-slate-950/40 text-slate-400 hover:text-slate-200 text-xs font-black uppercase tracking-wider py-3.5 px-2 rounded-xl transition-all">
+            🚨 Litigation
+          </button>
         </div>
-        <div>
-          <h3 class="text-md font-bold text-slate-200">Quote Ledger Logged Successfully</h3>
-          <p class="text-xs text-slate-500 mt-1">A structured breakdown copy has been compiled for your records.</p>
-        </div>
-
-        <button @click="downloadPDF" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-bold py-3 px-4 rounded-xl transition-all">
-          📄 Download Professional Blueprint PDF
-        </button>
-        
-        <button @click="formSubmitted = false" class="text-slate-500 hover:text-slate-400 text-[11px] block mx-auto underline">
-          Modify Calculations
-        </button>
       </div>
-    </main>
+
+      <div class="p-4 bg-slate-950/80 rounded-2xl border border-slate-800 flex justify-between items-center shadow-inner">
+        <span class="text-xs font-semibold text-slate-400">Projected Fee Calculation:</span>
+        <span class="text-2xl font-mono font-black text-emerald-400" id="total-fee-display">$3,000</span>
+      </div>
+
+      <div class="space-y-3 border-t border-slate-800/60 pt-5">
+        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">Secure Document Distribution Pipeline</label>
+        <input type="text" id="lead-name" placeholder="Business or Corporate Name" class="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-4 py-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors">
+        <input type="email" id="lead-email" placeholder="executive@corporate.com" class="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-4 py-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors">
+      </div>
+
+      <button onclick="processLeadSubmission()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs uppercase tracking-wider py-4 px-4 rounded-xl shadow-lg shadow-emerald-500/10 active:scale-[0.99] transition-all">
+        Lock Matrix & Compile Audit Trace
+      </button>
+    </div>
+
+    <!-- Success Screen Panel -->
+    <div id="success-panel" class="hidden text-center py-6 space-y-5">
+      <div class="w-14 h-14 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto text-2xl border border-emerald-500/20 shadow-inner">
+        ✓
+      </div>
+      <div>
+        <h3 class="text-sm font-black tracking-wide text-slate-200 uppercase">Matrix Blueprint Compiled</h3>
+        <p class="text-xs text-slate-400 mt-1.5 max-w-[280px] mx-auto leading-relaxed">A formal evaluation copy has been successfully prepared for immediate extraction.</p>
+      </div>
+
+      <button onclick="triggerPDFDownload()" class="w-full bg-gradient-to-r from-slate-800 to-slate-900 border border-slate-700/60 text-slate-200 hover:text-white text-xs font-bold py-3.5 px-4 rounded-xl shadow-lg transition-all">
+        📄 Extract Digital Audit Blueprint PDF
+      </button>
+      
+      <button onclick="restartCalculations()" class="text-slate-500 hover:text-slate-400 text-[10px] uppercase font-bold tracking-wider block mx-auto pt-2">
+        Modify Matrix Variables
+      </button>
+    </div>
+
   </div>
 
   <script>
-    const { createApp, ref } = Vue
+    let activeRate = 150;
+    
+    function updateCalculations() {
+      const hours = document.getElementById('scale-slider').value;
+      document.getElementById('hours-display').innerText = hours;
+      const total = hours * activeRate;
+      document.getElementById('total-fee-display').innerText = '$' + total.toLocaleString();
+    }
 
-    createApp({
-      setup() {
-        const bizName = ref('Zanesville Legal Consultants Group')
-        const bizLocation = ref('Zanesville, Ohio USA')
-
-        const projectScale = ref(20)
-        const tierRate = ref(120)
-        const leadName = ref('')
-        const leadEmail = ref('')
-        const formSubmitted = ref(false)
-
-        const submitQuote = () => {
-          formSubmitted.value = true
-        }
-
-        const downloadPDF = () => {
-          const { jsPDF } = window.jspdf
-          const doc = new jsPDF()
-          
-          const totalFee = projectScale.value * tierRate.value
-          
-          // Pure client-side professional layout compilation
-          doc.setFont("helvetica", "bold")
-          doc.text(`OFFICIAL PROJECT APPRAISAL`, 20, 20)
-          doc.setFont("helvetica", "normal")
-          doc.setFontSize(10)
-          doc.text(`Origin: ${bizName.value} (${bizLocation.value})`, 20, 30)
-          doc.text(`Target Lead Account: ${leadName.value} (${leadEmail.value})`, 20, 36)
-          doc.text(`-------------------------------------------------------------------------------------`, 20, 44)
-          
-          doc.text(`Estimated Workspace Investment:`, 20, 55)
-          doc.text(`Calculated Scope Metrics: ${projectScale.value} hours assigned scale.`, 20, 63)
-          doc.text(`Tier Premium Baseline Rate: $${tierRate.value} per billable hour unit.`, 20, 71)
-          
-          doc.setFont("helvetica", "bold")
-          doc.setFontSize(12)
-          doc.text(`Total Document Trace Balance: $${totalFee}`, 20, 85)
-          
-          doc.setFontSize(9)
-          doc.setFont("helvetica", "italic")
-          doc.text(`This document serves as an immediate digital estimate trace marker. Values are subject to master review.`, 20, 110)
-
-          doc.save(`Quote_Trace_${leadName.value.replace(/\s+/g, '_')}.pdf`)
-        }
-
-        return {
-          bizName,
-          bizLocation,
-          projectScale,
-          tierRate,
-          leadName,
-          leadEmail,
-          formSubmitted,
-          submitQuote,
-          downloadPDF
-        }
+    function setTier(rate, mode) {
+      activeRate = rate;
+      const stdBtn = document.getElementById('btn-std');
+      const urgBtn = document.getElementById('btn-urg');
+      
+      if(mode === 'std') {
+        stdBtn.className = "border border-emerald-500 bg-emerald-500/10 text-emerald-400 text-xs font-black uppercase tracking-wider py-3.5 px-2 rounded-xl transition-all";
+        urgBtn.className = "border border-slate-800 bg-slate-950/40 text-slate-400 hover:text-slate-200 text-xs font-black uppercase tracking-wider py-3.5 px-2 rounded-xl transition-all";
+      } else {
+        urgBtn.className = "border border-emerald-500 bg-emerald-500/10 text-emerald-400 text-xs font-black uppercase tracking-wider py-3.5 px-2 rounded-xl transition-all";
+        stdBtn.className = "border border-slate-800 bg-slate-950/40 text-slate-400 hover:text-slate-200 text-xs font-black uppercase tracking-wider py-3.5 px-2 rounded-xl transition-all";
       }
-    }).mount('#app')
+      updateCalculations();
+    }
+
+    function processLeadSubmission() {
+      const name = document.getElementById('lead-name').value;
+      const email = document.getElementById('lead-email').value;
+      
+      if(!name || !email) {
+        alert('Please specify your secure routing parameters.');
+        return;
+      }
+      
+      document.getElementById('calc-panel').classList.add('hidden');
+      document.getElementById('success-panel').classList.remove('hidden');
+    }
+
+    function triggerPDFDownload() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const hours = document.getElementById('scale-slider').value;
+      const total = hours * activeRate;
+      const name = document.getElementById('lead-name').value;
+      
+      doc.setFont("helvetica", "bold");
+      doc.text("OFFICIAL ARCHIVE APPRAISAL", 20, 20);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.text(`Origin: Zanesville Corporate Law Group`, 20, 32);
+      doc.text(`Assigned Recipient Asset: ${name}`, 20, 40);
+      doc.text(`-----------------------------------------------------------------------------------`, 20, 48);
+      doc.text(`Assigned Scope Metrics: ${hours} project hours allocated.`, 20, 58);
+      doc.text(`Premium Tier Hour Value: $${activeRate}/hr`, 20, 66);
+      doc.setFont("helvetica", "bold");
+      doc.text(`Total Document Trace Balance: $${total.toLocaleString()}`, 20, 80);
+      
+      doc.save("Audit_Trace_Matrix.pdf");
+    }
+
+    function restartCalculations() {
+      document.getElementById('success-panel').classList.add('hidden');
+      document.getElementById('calc-panel').classList.remove('hidden');
+    }
   </script>
 </body>
 </html>
