@@ -1,168 +1,305 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enterprise AI Platform</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'SF Pro Display', '-apple-system', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Inter Font for Corporate Look -->
+    <!-- Premium Font Layout -->
     <link href="https://googleapis.com" rel="stylesheet">
-    <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com"></script>
+    
     <style>
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
+        /* Base Reset & Core Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+            background-color: #030303;
+            color: #f4f4f5;
+        }
+        body {
+            antialiased: true;
+            overflow-x: hidden;
+            padding-top: 80px;
+        }
+        
+        /* Layout Wrappers */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Glassmorphism Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            background: rgba(25, 25, 25, 0.75);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-b: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 1000;
         }
-        .text-gradient {
-            background: linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%);
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.05em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .logo span { color: #6366f1; }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        .nav-links a {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: #ffffff; }
+
+        /* Premium Buttons */
+        .btn-white {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-white:hover { background: #e4e4e7; }
+        .btn-primary {
+            background: #4f46e5;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover { background: #4338ca; }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.03);
+            color: #e4e4e7;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 24px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            text-align: center;
+            padding: 80px 0;
+        }
+        .glow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            height: 250px;
+            background: rgba(99, 102, 241, 0.12);
+            filter: blur(100px);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            color: #a1a1aa;
+            margin-bottom: 24px;
+        }
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .hero p {
+            color: #a1a1aa;
+            font-size: 1.125rem;
+            font-weight: 300;
+            line-height: 1.6;
+            max-width: 680px;
+            margin: 0 auto 40px auto;
+        }
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        /* Mockup Terminal Box */
+        .mockup {
+            margin-top: 64px;
+            background: rgba(25, 25, 25, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px;
+        }
+        .terminal {
+            background: #09090b;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 24px;
+            height: 300px;
+            text-align: left;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #71717a;
+        }
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #18181b;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+        .dots { display: flex; gap: 6px; }
+        .dot { width: 8px; height: 8px; background: #27272a; border-radius: 50%; }
+        .terminal-body { color: #818cf8; line-height: 1.8; }
+
+        /* Bento Grid Sections */
+        .features { padding: 96px 0; }
+        .features-header { margin-bottom: 48px; }
+        .features-header h2 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+        .features-header p { color: #a1a1aa; font-weight: 300; font-size: 0.95rem; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 32px;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card h3 { font-size: 1.125rem; font-weight: 600; margin-bottom: 8px; color: #ffffff; }
+        .card p { color: #a1a1aa; font-size: 0.875rem; font-weight: 300; line-height: 1.5; }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid #18181b;
+            padding: 48px 0;
+            margin-top: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #52525b;
+        }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a { color: #52525b; text-decoration: none; }
+        .footer-links a:hover { color: #a1a1aa; }
+
+        /* Responsive UI rules */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            .nav-links { display: none; }
+            .cta-group { flex-direction: column; }
+        }
     </style>
 </head>
-<body class="bg-[#030303] text-zinc-100 font-sans antialiased overflow-x-hidden">
+<body>
 
     <!-- Header / Navbar -->
-    <nav class="fixed top-0 left-0 w-full z-50 glass border-b border-zinc-800/50">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2 font-semibold text-lg tracking-tight">
-                <i data-lucide="layers" class="text-indigo-500 w-6 h-6"></i>
-                <span>NEXUS<span class="text-indigo-500">.</span>AI</span>
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                NEXUS<span>.</span>AI
             </div>
-            <div class="hidden md:flex items-center gap-8 text-sm text-zinc-400 font-medium">
-                <a href="#features" class="hover:text-white transition-colors">Features</a>
-                <a href="#solutions" class="hover:text-white transition-colors">Solutions</a>
-                <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#solutions">Solutions</a>
+                <a href="#pricing">Pricing</a>
             </div>
             <div>
-                <button class="bg-white text-black text-xs font-semibold px-4 py-2 rounded-full hover:bg-zinc-200 transition-all shadow-lg shadow-white/5">
-                    Launch Console
-                </button>
+                <button class="btn-white">Launch Console</button>
             </div>
         </div>
-    </nav>
+    </header>
 
     <!-- Hero Section -->
-    <section class="relative pt-32 pb-24 px-6 max-w-7xl mx-auto flex flex-col items-center text-center">
-        <!-- Subtle background glow -->
-        <div class="absolute top-12 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-indigo-600/10 blur-[120px] rounded-full pointer-events-none"></div>
-        
-        <div class="inline-flex items-center gap-2 glass px-3 py-1 rounded-full text-xs font-medium text-zinc-400 mb-6 border border-zinc-800">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+    <section class="container hero">
+        <div class="glow"></div>
+        <div class="badge">
+            <span class="badge-dot"></span>
             Nexus Engine v2.0 is now live
         </div>
-        
-        <h1 class="text-4xl md:text-7xl font-bold tracking-tight max-w-4xl text-gradient leading-[1.1] mb-6">
-            The infrastructure layer for enterprise intelligence.
-        </h1>
-        
-        <p class="text-zinc-400 text-base md:text-xl max-w-2xl mb-10 font-light leading-relaxed">
-            Deploy secure, scalable AI models across your entire corporate ecosystem in minutes. Built for speed, compliance, and heavy workloads.
-        </p>
-        
-        <div class="flex flex-col sm:flex-row items-center gap-4">
-            <button class="w-full sm:w-auto bg-indigo-600 text-white text-sm font-medium px-6 py-3 rounded-xl hover:bg-indigo-500 transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20">
-                Start Free Trial
-                <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
-            <button class="w-full sm:w-auto glass text-zinc-300 text-sm font-medium px-6 py-3 rounded-xl hover:bg-zinc-800/50 transition-all flex items-center justify-center gap-2">
-                Talk to Sales
-            </button>
+        <h1>The infrastructure layer for enterprise intelligence.</h1>
+        <p>Deploy secure, scalable AI models across your entire corporate ecosystem in minutes. Built for speed, compliance, and heavy workloads.</p>
+        <div class="cta-group">
+            <button class="btn-primary">Start Free Trial</button>
+            <button class="btn-secondary">Talk to Sales</button>
         </div>
 
-        <!-- Interactive Mockup Visual -->
-        <div class="w-full mt-20 glass rounded-2xl p-4 border border-zinc-800/80 shadow-2xl shadow-indigo-500/5">
-            <div class="w-full h-[300px] md:h-[450px] rounded-xl bg-[#09090b] border border-zinc-800/40 p-4 flex flex-col gap-4 text-left font-mono text-xs text-zinc-500">
-                <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
-                    <div class="flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-zinc-800"></span>
-                        <span class="w-3 h-3 rounded-full bg-zinc-800"></span>
-                        <span class="w-3 h-3 rounded-full bg-zinc-800"></span>
-                    </div>
-                    <span class="text-zinc-600 text-[10px]">nexus-core-prod.yaml</span>
+        <!-- Simulated Coding Graphic -->
+        <div class="mockup">
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                    <span>nexus-core-prod.yaml</span>
                 </div>
-                <div class="flex-1 overflow-y-auto space-y-2 pt-2 text-indigo-400/90 selection:bg-indigo-500/20">
-                    <p><span class="text-zinc-600">1</span> <span class="text-purple-400">initialization:</span> success</p>
-                    <p><span class="text-zinc-600">2</span> <span class="text-emerald-400">loading clusters:</span> 12 regions active [latency 11ms]</p>
-                    <p><span class="text-zinc-600">3</span> <span class="text-zinc-400">syncing corporate_security_layer... done</span></p>
-                    <p><span class="text-zinc-600">4</span> <span class="text-amber-400">status:</span> ready to scale indefinitely.</p>
+                <div class="terminal-body">
+                    <p style="color:#a78bfa">initialization: <span style="color:#f4f4f5">success</span></p>
+                    <p style="color:#34d399">loading clusters: <span style="color:#f4f4f5">12 regions active [latency 11ms]</span></p>
+                    <p style="color:#a1a1aa">syncing corporate_security_layer... done</p>
+                    <p style="color:#fbbf24">status: <span style="color:#f4f4f5">ready to scale indefinitely.</span></p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Bento Grid Features Section -->
-    <section id="features" class="py-24 px-6 max-w-7xl mx-auto">
-        <div class="mb-16 text-center md:text-left">
-            <h2 class="text-3xl font-bold tracking-tight mb-4">Engineered for Scale</h2>
-            <p class="text-zinc-400 font-light max-w-md">Everything a modern enterprise requires to ship global-scale software safely.</p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Box 1 -->
-            <div class="glass p-8 rounded-2xl border border-zinc-800 flex flex-col justify-between min-h-[220px]">
-                <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl w-fit">
-                    <i data-lucide="shield-check"></i>
-                </div>
-                <div>
-                    <h3 class="text-lg font-medium mb-2">Bank-Grade Compliance</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed">Full SOC2 Type II, GDPR, and HIPAA isolation engines built into the foundational architecture.</p>
-                </div>
-            </div>
-            <!-- Box 2 -->
-            <div class="glass p-8 rounded-2xl border border-zinc-800 flex flex-col justify-between min-h-[220px]">
-                <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl w-fit">
-                    <i data-lucide="zap"></i>
-                </div>
-                <div>
-                    <h3 class="text-lg font-medium mb-2">Sub-Millisecond Speed</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed">Global edge network deployment targets routes instantly, minimizing latency spikes across execution zones.</p>
-                </div>
-            </div>
-            <!-- Box 3 -->
-            <div class="glass p-8 rounded-2xl border border-zinc-800 flex flex-col justify-between min-h-[220px]">
-                <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl w-fit">
-                    <i data-lucide="cpu"></i>
-                </div>
-                <div>
-                    <h3 class="text-lg font-medium mb-2">Automated Optimization</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed">Self-healing computation scripts actively prune memory leaks and re-allocate computing resource maps.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="border-t border-zinc-900 py-12 px-6 max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-zinc-500 font-light">
-        <div class="flex items-center gap-2">
-            <i data-lucide="layers" class="text-zinc-600 w-4 h-4"></i>
-            <span>&copy; 2026 Nexus AI Technologies Inc. All rights reserved.</span>
-        </div>
-        <div class="flex gap-6">
-            <a href="#" class="hover:text-zinc-300">Privacy Policy</a>
-            <a href="#" class="hover:text-zinc-300">Terms of Service</a>
-            <a href="#" class="hover:text-zinc-300">Security Documentation</a>
-        </div>
-    </footer>
-
-    <!-- Initialize Lucide Icons -->
-    <script>
-        lucide.createIcons();
-    </script>
-</body>
-</html>
+    <section id="features" class="container features">
+        <div class="features-header">
+            <h2>Engineered for Scale</h2>
