@@ -1,134 +1,113 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2030 Visual AI Triage - Local Trades Demo</title>
-  <!-- Tailwind CSS CDN -->
+  <title>2030 AI Visual Triage Hub</title>
   <script src="https://tailwindcss.com"></script>
-  <!-- Vue 3 CDN -->
-  <script src="https://unpkg.com"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 antialiased">
+<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex items-center justify-center p-4 antialiased selection:bg-cyan-500 selection:text-slate-900">
 
-  <div id="app" class="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+  <!-- Background Decorative Glowing Nebulas -->
+  <div class="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
+    <div class="absolute -top-[20%] -left-[10%] w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[140px]"></div>
+    <div class="absolute -bottom-[20%] -right-[10%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[140px]"></div>
+  </div>
+
+  <div id="app" class="relative z-10 w-full max-w-md bg-slate-900/40 backdrop-blur-2xl border border-slate-800/80 rounded-3xl p-6 shadow-[0_0_50px_-12px_rgba(6,182,212,0.15)]">
     
-    <!-- Neon Accent Glows -->
-    <div class="absolute -top-24 -left-24 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-    <!-- Header Block -->
+    <!-- Top Animated Tag -->
     <header class="text-center mb-8">
-      <div class="inline-flex items-center gap-2 px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded-full text-xs text-cyan-400 font-medium tracking-wide uppercase mb-3 animate-pulse">
-        ⚡ 2030 AI Assistant
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-full text-[11px] text-cyan-400 font-bold uppercase tracking-wider mb-4 animate-pulse">
+        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 inline-block animate-ping"></span>
+        2030 Vision AI System
       </div>
-      <h1 class="text-2xl font-black bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-        {{ bizName }}
+      <h1 id="biz-title" class="text-2xl font-black tracking-tight bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
+        Boston Emergency Plumbers
       </h1>
-      <p class="text-slate-400 text-xs mt-1">Smart Emergency Smart-Triage for {{ bizLocation }} Area</p>
+      <p id="biz-sub" class="text-slate-400 text-xs mt-1.5 font-medium">Smart Dispatch Matrix • Boston, UK Region</p>
     </header>
 
-    <!-- Main Dynamic Interface -->
-    <main>
-      <!-- STATE 1: Initial Upload Form -->
-      <div v-if="step === 'upload'" class="space-y-5">
-        <p class="text-sm text-slate-300 text-center">Skip the phone queue. Upload an image or short clip of your emergency issue for instant AI appraisal.</p>
-        
-        <!-- Fake File Drop Zone -->
-        <div @click="simulateSelection" class="border-2 border-dashed border-slate-700 hover:border-cyan-500/50 bg-slate-950/40 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 group">
-          <div class="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center mx-auto border border-slate-800 group-hover:scale-110 transition-transform">
-            📷
-          </div>
-          <span class="block text-xs font-semibold text-slate-200 mt-3">Tap to snap or upload visual</span>
-          <span class="block text-[10px] text-slate-500 mt-1">Close-up and step-back angles preferred</span>
-        </div>
+    <!-- Upload Screen State -->
+    <div id="step-upload" class="space-y-6">
+      <p class="text-slate-300 text-sm text-center leading-relaxed px-2">
+        Bypass phone lines entirely. Drop a visual of your trade crisis below for immediate tactical analysis.
+      </p>
 
-        <!-- Hidden inputs simulated or just simple click-trigger -->
-        <button @click="startTriage" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-sm py-3 px-4 rounded-xl shadow-lg shadow-cyan-500/10 active:scale-[0.98] transition-all">
-          Analyze Urgent Issue Now
-        </button>
+      <div onclick="triggerScan()" class="group relative border border-dashed border-slate-800 hover:border-cyan-500/40 bg-slate-950/50 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_0_30px_-5px_rgba(6,182,212,0.1)]">
+        <div class="w-14 h-14 rounded-2xl bg-slate-900/80 flex items-center justify-center mx-auto border border-slate-800 group-hover:border-cyan-500/30 group-hover:bg-slate-900 text-2xl shadow-inner transition-all">
+          📸
+        </div>
+        <span class="block text-xs font-semibold text-slate-200 mt-4 tracking-wide group-hover:text-cyan-400 transition-colors">Tap to scan or snap issue location</span>
+        <span class="block text-[10px] text-slate-500 mt-1">Requires wide perspective + core structural angles</span>
       </div>
 
-      <!-- STATE 2: Futuristic AI Scanning Animation -->
-      <div v-if="step === 'scanning'" class="py-12 text-center space-y-4">
-        <div class="relative w-16 h-16 mx-auto">
-          <div class="absolute inset-0 rounded-full border-4 border-slate-800"></div>
-          <div class="absolute inset-0 rounded-full border-4 border-t-cyan-500 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
+      <button onclick="triggerScan()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-xs uppercase tracking-wider py-4 px-4 rounded-xl shadow-lg shadow-cyan-500/10 active:scale-[0.99] transition-all">
+        Initiate Automated Appraisal
+      </button>
+    </div>
+
+    <!-- Scanning Loading State -->
+    <div id="step-scanning" class="hidden py-10 text-center space-y-5">
+      <div class="relative w-16 h-16 mx-auto">
+        <div class="absolute inset-0 rounded-full border-[3px] border-slate-800/60"></div>
+        <div class="absolute inset-0 rounded-full border-[3px] border-t-cyan-400 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
+      </div>
+      <div>
+        <h3 class="text-xs font-bold text-cyan-400 tracking-widest uppercase animate-pulse">Running Vision Diagnostics</h3>
+        <p class="text-[11px] text-slate-500 mt-1.5 font-mono">Parsing risk matrices & volume deep fields...</p>
+      </div>
+    </div>
+
+    <!-- Finished Results State -->
+    <div id="step-result" class="hidden space-y-6">
+      <div class="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-xl space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400">Analysis Concluded</span>
+          <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-md font-mono font-bold tracking-tight">CRITICAL LEVEL 4</span>
         </div>
-        <div>
-          <h3 class="text-sm font-bold text-cyan-400 tracking-wider uppercase animate-pulse">Running Vision Diagnostics</h3>
-          <p class="text-xs text-slate-500 mt-1">Parsing depth fields & estimating damage risk matrix...</p>
-        </div>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Vision matrices register systemic structural water flow disruption. Automated containment orders dispatched below to safeguard assets prior to engineer site arrival.
+        </p>
       </div>
 
-      <!-- STATE 3: The 2030 Output Resolution (The Hook) -->
-      <div v-if="step === 'result'" class="space-y-6">
-        <div class="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Analysis Complete</span>
-            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-mono">PRIORITY: HIGH</span>
-          </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            AI computer vision flags dynamic water main failure or structural risk. Automated patch instructions compiled below to minimize property damage while technician dispatches.
-          </p>
-        </div>
-
-        <!-- Automated Action Plan generated instantly -->
-        <div class="space-y-2">
-          <h4 class="text-xs font-semibold text-slate-400 tracking-wide uppercase">Your Instant Action Plan:</h4>
-          <ul class="text-xs text-slate-300 space-y-1.5 list-disc pl-4">
-            <li>Locate main stopcock gate valve immediately (usually near street boundary or under front basin).</li>
-            <li>Isolate circuit breakers to local wet zones if pooling exceeds 2cm floor boundary depth.</li>
-          </ul>
-        </div>
-
-        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-center">
-          <p class="text-[10px] text-slate-500 uppercase font-mono">Real-time Operator Dispatch Status</p>
-          <p class="text-xs text-cyan-400 font-bold mt-1">✅ Notification sent directly to {{ bizOwner }}'s mobile device.</p>
-        </div>
-
-        <button @click="resetDemo" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 px-4 rounded-xl transition-colors">
-          🔄 Test Next Use Case
-        </button>
+      <div class="space-y-3">
+        <h4 class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Immediate Action Protocol:</h4>
+        <ul class="text-xs text-slate-300 space-y-2 pl-1">
+          <li class="flex items-start gap-2"><span class="text-cyan-400 font-bold">•</span> Shut down main fluid valve control gates immediately.</li>
+          <li class="flex items-start gap-2"><span class="text-cyan-400 font-bold">•</span> Isolate all active local electrical conduits in wet areas.</li>
+        </ul>
       </div>
-    </main>
+
+      <div class="p-3.5 bg-slate-950/60 rounded-xl border border-slate-800/80 text-center shadow-inner">
+        <p class="text-[9px] text-slate-500 uppercase font-mono tracking-wider">Secure Operator Notification Pipeline</p>
+        <p class="text-xs text-cyan-400 font-bold mt-1.5 flex items-center justify-center gap-1.5">
+          <span>⚡</span> Live alert pushed directly to Technician's terminal
+        </p>
+      </div>
+
+      <button onclick="resetDemo()" class="w-full bg-slate-800/60 hover:bg-slate-800 text-slate-300 border border-slate-700/50 text-xs font-bold py-3 px-4 rounded-xl transition-all">
+        🔄 Simulate Alternate Scenario
+      </button>
+    </div>
+
   </div>
 
   <script>
-    const { createApp, ref } = Vue
+    function triggerScan() {
+      document.getElementById('step-upload').classList.add('hidden');
+      document.getElementById('step-scanning').classList.remove('hidden');
+      
+      setTimeout(() => {
+        document.getElementById('step-scanning').classList.add('hidden');
+        document.getElementById('step-result').classList.remove('hidden');
+      }, 2000);
+    }
 
-    createApp({
-      setup() {
-        // Change these details easily to match your local pitch in 2 seconds!
-        const bizName = ref('Boston Emergency Plumbers Ltd')
-        const bizLocation = ref('Boston, Lincolnshire UK')
-        const bizOwner = ref('Dave')
-
-        // Reactive Application State Management
-        const step = ref('upload') 
-
-        const startTriage = () => {
-          step.value = 'scanning'
-          // Simulate the speed of Google Gemini Core Engine processing
-          setTimeout(() => {
-            step.value = 'result'
-          }, 2200)
-        }
-
-        const resetDemo = () => {
-          step.value = 'upload'
-        }
-
-        return {
-          bizName,
-          bizLocation,
-          bizOwner,
-          step,
-          startTriage,
-          resetDemo
-        }
-      }
-    }).mount('#app')
+    function resetDemo() {
+      document.getElementById('step-result').classList.add('hidden');
+      document.getElementById('step-upload').classList.remove('hidden');
+    }
   </script>
 </body>
 </html>
