@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2030 Smart Quote Matrix</title>
+  <!-- Tailwind & Vue CDNs -->
+  <script src="https://tailwindcss.com"></script>
+  <script src="https://unpkg.com"></script>
+  <!-- jsPDF Library CDN for generating PDFs instantly in browser -->
+  <script src="https://cloudflare.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 antialiased">
+
+  <div id="app" class="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl relative">
+    
+    <!-- Neon Design Accent -->
+    <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <header class="text-center mb-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-xs text-emerald-400 font-medium tracking-wide uppercase mb-3">
+        📊 Instant Fee Appraiser
+      </div>
+      <h1 class="text-2xl font-black bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+        {{ bizName }}
+      </h1>
+      <p class="text-slate-400 text-xs mt-1">Commercial Quote Matrix for {{ bizLocation }}</p>
+    </header>
+
+    <main class="space-y-6">
+      <!-- Step 1: Form Sliders & Interactive Elements -->
+      <div v-if="!formSubmitted" class="space-y-5">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+            Project / Audit Scale: <span class="text-emerald-400 font-mono font-bold">{{ projectScale }} Hours</span>
+          </label>
+          <input type="range" min="5" max="50" step="5" v-model="projectScale" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Service Complexity Tier</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button @click="tierRate = 120" :class="tierRate === 120 ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400' : 'border-slate-800 bg-slate-950/40 text-slate-400'" class="border text-xs font-bold py-3 px-2 rounded-xl transition-all">
+              ⚖️ Standard Corporate
+            </button>
+            <button @click="tierRate = 220" :class="tierRate === 220 ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400' : 'border-slate-800 bg-slate-950/40 text-slate-400'" class="border text-xs font-bold py-3 px-2 rounded-xl transition-all">
+              🚨 Urgent Intervention
+            </button>
+          </div>
+        </div>
+
+        <!-- Real-time dynamic arithmetic projection -->
+        <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 flex justify-between items-center">
+          <span class="text-xs text-slate-400">Estimated Project Fee:</span>
+          <span class="text-xl font-mono font-black text-emerald-400">${{ projectScale * tierRate }}</span>
+        </div>
+
+        <!-- Lead Capture Shield -->
+        <div class="space-y-2 border-t border-slate-800/60 pt-4">
+          <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Secure Document Routing Details</label>
+          <input type="text" v-model="leadName" placeholder="Your Name or Company" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50">
+          <input type="email" v-model="leadEmail" placeholder="business@email.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50">
+        </div>
+
+        <button @click="submitQuote" :disabled="!leadName || !leadEmail" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 disabled:opacity-40 text-slate-950 font-bold text-sm py-3 px-4 rounded-xl shadow-lg shadow-emerald-500/10 active:scale-[0.98] transition-all">
+          Lock Estimate & Generate Audit PDF
+        </button>
+      </div>
+
+      <!-- Step 2: Generation Screen -->
+      <div v-else class="text-center py-6 space-y-4">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto text-xl border border-emerald-500/30">
+          ✓
+        </div>
+        <div>
+          <h3 class="text-md font-bold text-slate-200">Quote Ledger Logged Successfully</h3>
+          <p class="text-xs text-slate-500 mt-1">A structured breakdown copy has been compiled for your records.</p>
+        </div>
+
+        <button @click="downloadPDF" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-bold py-3 px-4 rounded-xl transition-all">
+          📄 Download Professional Blueprint PDF
+        </button>
+        
+        <button @click="formSubmitted = false" class="text-slate-500 hover:text-slate-400 text-[11px] block mx-auto underline">
+          Modify Calculations
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const { createApp, ref } = Vue
+
+    createApp({
+      setup() {
+        const bizName = ref('Zanesville Legal Consultants Group')
+        const bizLocation = ref('Zanesville, Ohio USA')
+
+        const projectScale = ref(20)
+        const tierRate = ref(120)
+        const leadName = ref('')
+        const leadEmail = ref('')
+        const formSubmitted = ref(false)
+
+        const submitQuote = () => {
+          formSubmitted.value = true
+        }
+
+        const downloadPDF = () => {
+          const { jsPDF } = window.jspdf
+          const doc = new jsPDF()
+          
+          const totalFee = projectScale.value * tierRate.value
+          
+          // Pure client-side professional layout compilation
+          doc.setFont("helvetica", "bold")
+          doc.text(`OFFICIAL PROJECT APPRAISAL`, 20, 20)
+          doc.setFont("helvetica", "normal")
+          doc.setFontSize(10)
+          doc.text(`Origin: ${bizName.value} (${bizLocation.value})`, 20, 30)
+          doc.text(`Target Lead Account: ${leadName.value} (${leadEmail.value})`, 20, 36)
+          doc.text(`-------------------------------------------------------------------------------------`, 20, 44)
+          
+          doc.text(`Estimated Workspace Investment:`, 20, 55)
+          doc.text(`Calculated Scope Metrics: ${projectScale.value} hours assigned scale.`, 20, 63)
+          doc.text(`Tier Premium Baseline Rate: $${tierRate.value} per billable hour unit.`, 20, 71)
+          
+          doc.setFont("helvetica", "bold")
+          doc.setFontSize(12)
+          doc.text(`Total Document Trace Balance: $${totalFee}`, 20, 85)
+          
+          doc.setFontSize(9)
+          doc.setFont("helvetica", "italic")
+          doc.text(`This document serves as an immediate digital estimate trace marker. Values are subject to master review.`, 20, 110)
+
+          doc.save(`Quote_Trace_${leadName.value.replace(/\s+/g, '_')}.pdf`)
+        }
+
+        return {
+          bizName,
+          bizLocation,
+          projectScale,
+          tierRate,
+          leadName,
+          leadEmail,
+          formSubmitted,
+          submitQuote,
+          downloadPDF
+        }
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>
